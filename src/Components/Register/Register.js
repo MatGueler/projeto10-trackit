@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import '../Login/Login'
 import logo from '../../Assets/Images/logo.png'
 
-function Login() {
+function Register(){
     return (
         <>
             <Container>
@@ -11,15 +12,15 @@ function Login() {
                 <Form>
                     <input type="email" placeholder='email' />
                     <input type="password" placeholder='senha' />
+                    <input type="text" placeholder='nome' />
+                    <input type="url" placeholder='foto' />
                     <button type="submit">Entrar</button>
                 </Form>
-                <h1>Não tem uma conta? Cadastre-se!</h1>
+                <h1>Já tem uma conta? Faça login!</h1>
             </Container>
         </>
     )
 }
-
-export default Login;
 
 const Container = styled.div`
 display: flex;
@@ -32,7 +33,6 @@ h1{
     margin-top: 20px;
     font-size: 14px;
     color: #52B6FF;
-    font-family: 'Lexend', sans-serif;
     text-decoration: underline;
 }
 `
@@ -44,11 +44,10 @@ flex-direction: column;
 
 input{
     height: 45px;
-    margin: 10px 0;
+    margin: 5px 0;
     border-radius: 5px;
     border: solid 1px #D4D4D4;
     padding: 0 10px;
-    font-family: 'Lexend', sans-serif;
     font-size: 20px;
 }
 
@@ -74,3 +73,5 @@ img{
     width: 180px;
 }
 `
+
+export default Register;
