@@ -2,15 +2,14 @@ import styled from 'styled-components'
 import "react-circular-progressbar/dist/styles.css";
 import {
     CircularProgressbar,
-    CircularProgressbarWithChildren,
     buildStyles
   } from "react-circular-progressbar";
 
-function Footer() {
+function Footer({footer}) {
     const percentage = 66;
     return (
         <>
-            <Bottom>
+            <Bottom footer={footer}>
                 <h1>Hábitos</h1>
                 <Progress>
                     <CircularProgressbar
@@ -39,7 +38,7 @@ height: 70px;
 width: 100%;
 position:fixed;
 bottom: 0;
-display: flex;
+display: ${props => props.footer};
 justify-content: space-around;
 align-items: center;
 background-color: #FFFFFF;

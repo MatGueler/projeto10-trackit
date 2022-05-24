@@ -19,19 +19,25 @@ import './Assets/CSS/style.css'
 
 
 function App() {
-    const [header,setHeader] = useState('none');
-    const [footer,setFooter] = useState('none');
+    const [header, setHeader] = useState('none');
+    const [footer, setFooter] = useState('none');
+    const [infos, setInfos] = useState([])
+    const [token, setToken] = useState('')
 
     return (
         <>
             <BrowserRouter>
-            <Header header={header} setHeader={setHeader}/>
-            <Footer footer={header} setFooter={setHeader}/>
+                <Header header={header} infos={infos} />
+                <Footer footer={header} />
                 <Routes>
-                    <Route path="/" element={<Login/>}/>
-                    <Route path="/cadastro" element={<Register/>}/>
-                    <Route path="/habitos" element={<Habits header={header} setHeader={setHeader}/>}/>
-                    <Route path="/historico" element={<Historic />}/>
+
+                    <Route path="/" element={<Login setToken={setToken} infos={infos} setInfos={setInfos} />} />
+
+                    <Route path="/cadastro" element={<Register />} />
+
+                    <Route path="/habitos" element={<Habits header={header} setHeader={setHeader} footer={footer} setFooter={setFooter} infos={infos} />} />
+
+                    <Route path="/historico" element={<Historic />} />
                 </Routes>
             </BrowserRouter>
         </>

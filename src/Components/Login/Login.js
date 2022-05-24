@@ -1,7 +1,43 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
 import logo from '../../Assets/Images/logo.png'
 
-function Login() {
+function Login(props) {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const { setToken, infos, setInfos } = props
+
+    function GoToRegister() {
+        navigate('/cadastro')
+    }
+
+    let navigate = useNavigate()
+
+    function LogInto(event) {
+
+        event.preventDefault();
+
+        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login'
+
+        const body = {
+            email,
+            password
+        }
+
+        const promise = axios.post(URL, body)
+
+        promise.then(res => {
+            let data = res.data;
+            setInfos([data])
+            setToken(data.token)
+            navigate('../habitos')
+        })
+        promise.catch(err => alert('Preencha os campos corretamente!'))
+    }
+
     return (
         <>
             <Container>
@@ -9,11 +45,11 @@ function Login() {
                     <img src={logo} alt='logo' />
                 </Logo>
                 <Form>
-                    <input type="email" placeholder='email' />
-                    <input type="password" placeholder='senha' />
-                    <button type="submit">Entrar</button>
+                    <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} />
+                    <input type="password" placeholder='senha' value={password} onChange={(event) => setPassword(event.target.value)} />
+                    <button onClick={LogInto}>Entrar</button>
                 </Form>
-                <h1>Não tem uma conta? Cadastre-se!</h1>
+                <h1 onClick={GoToRegister}>Não tem uma conta? Cadastre-se!</h1>
             </Container>
         </>
     )
@@ -34,6 +70,7 @@ h1{
     color: #52B6FF;
     font-family: 'Lexend', sans-serif;
     text-decoration: underline;
+    cursor: pointer;
 }
 `
 

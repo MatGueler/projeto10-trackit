@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 import logoMenu from '../../Assets/Images/logoMenu.png'
-import profile from '../../Assets/Images/perfil.png'
 
-function Header({ header, setHeader }) {
+function Header({ header, infos }) {
 
     return (
         <>
             <Top header={header}>
                 <img src={logoMenu} alt='' />
-                <img src={profile} alt='' />
+                <Profile>
+                    {infos.map((info, index) => { return (<img key={index} src={info.image} alt='' />) })}
+                </Profile>
             </Top>
         </>
     )
@@ -25,7 +26,17 @@ background-color:#126BA5;
 padding: 10px 20px;
 
 img{
+    height: 30px;
+}
+`
+
+const Profile = styled.div`
+
+img{
     height: 50px;
+    width: 50px;
+    border-radius:50%;
+    object-fit: cover;
 }
 `
 
