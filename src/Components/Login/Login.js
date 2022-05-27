@@ -1,22 +1,22 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import logo from '../../Assets/Images/logo.png'
+import TokenContext from '../../Contexts/TokenContext';
 
-function Login(props) {
+function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { setToken, infos, setInfos } = props
-
-    function GoToRegister() {
-        navigate('/cadastro')
-    }
+    const [disableInput, setDisableInput] = useState(false)
+    const { setToken, infos, setInfos } = useContext(TokenContext)
 
     let navigate = useNavigate()
 
     function LogInto(event) {
+
+        setDisableInput(true)
 
         event.preventDefault();
 
@@ -33,9 +33,12 @@ function Login(props) {
             let data = res.data;
             setInfos([data])
             setToken(data.token)
-            navigate('../habitos')
+            navigate('../hoje')
         })
-        promise.catch(err => alert('Preencha os campos corretamente!'))
+        promise.catch(err => {
+            setDisableInput(false)
+            alert('Preencha os campos corretamente!')
+        })
     }
 
     return (
@@ -45,11 +48,11 @@ function Login(props) {
                     <img src={logo} alt='logo' />
                 </Logo>
                 <Form>
-                    <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} />
-                    <input type="password" placeholder='senha' value={password} onChange={(event) => setPassword(event.target.value)} />
-                    <button onClick={LogInto}>Entrar</button>
+                    <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} disabled={disableInput} />
+                    <input type="password" placeholder='senha' value={password} onChange={(event) => setPassword(event.target.value)} disabled={disableInput} />
+                    <button onClick={LogInto} disabled={disableInput}>Entrar</button>
                 </Form>
-                <h1 onClick={GoToRegister}>Não tem uma conta? Cadastre-se!</h1>
+                <h1 onClick={() => navigate('/cadastro')}>Não tem uma conta? Cadastre-se!</h1>
             </Container>
         </>
     )

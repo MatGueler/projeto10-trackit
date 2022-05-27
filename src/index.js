@@ -1,8 +1,11 @@
 import ReactDOM from "react-dom";
 
+
+
+
 // Hooks
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 
 
 // Components
@@ -11,7 +14,9 @@ import Register from "./Components/Register/Register";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import Habits from "./Components/Habits/Habits";
+import Today from "./Components/Today/Today";
 import Historic from "./Components/Historic/Historic";
+import TokenContext from "./Contexts/TokenContext";
 
 // CSS data
 import './Assets/CSS/reset.css'
@@ -23,23 +28,28 @@ function App() {
     const [footer, setFooter] = useState('none');
     const [infos, setInfos] = useState([])
     const [token, setToken] = useState('')
+    const [percentage, setPercentage] = useState(50)
 
     return (
         <>
-            <BrowserRouter>
-                <Header header={header} infos={infos} />
-                <Footer footer={header} />
-                <Routes>
+            <TokenContext.Provider value={{ token, setToken, infos, setInfos, percentage, setPercentage }}>
+                <BrowserRouter>
+                    <Header header={header} />
+                    <Footer footer={footer} />
+                    <Routes>
 
-                    <Route path="/" element={<Login setToken={setToken} infos={infos} setInfos={setInfos} />} />
+                        <Route path="/" element={<Login />} />
 
-                    <Route path="/cadastro" element={<Register />} />
+                        <Route path="/cadastro" element={<Register />} />
 
-                    <Route path="/habitos" element={<Habits header={header} setHeader={setHeader} footer={footer} setFooter={setFooter} infos={infos} />} />
+                        <Route path="/habitos" element={<Habits />} />
 
-                    <Route path="/historico" element={<Historic />} />
-                </Routes>
-            </BrowserRouter>
+                        <Route path="/hoje" element={<Today setHeader={setHeader} setFooter={setFooter} />} />
+
+                        <Route path="/historico" element={<Historic />} />
+                    </Routes>
+                </BrowserRouter>
+            </TokenContext.Provider>
         </>
     );
 }

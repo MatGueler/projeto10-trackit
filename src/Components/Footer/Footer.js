@@ -1,17 +1,26 @@
 import styled from 'styled-components'
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 import {
     CircularProgressbar,
     buildStyles
-  } from "react-circular-progressbar";
+} from "react-circular-progressbar";
+import { useContext } from 'react'
 
-function Footer({footer}) {
-    const percentage = 66;
+// Components
+import TokenContext from '../../Contexts/TokenContext';
+
+function Footer({ footer }) {
+
+    const { percentage } = useContext(TokenContext)
+
+    let navigate = useNavigate()
+
     return (
         <>
             <Bottom footer={footer}>
-                <h1>Hábitos</h1>
-                <Progress>
+                <h1 onClick={() => navigate('/habitos')}>Hábitos</h1>
+                <Progress onClick={() => navigate('/hoje')}>
                     <CircularProgressbar
                         value={percentage}
                         text={`${percentage}%`}
@@ -25,7 +34,7 @@ function Footer({footer}) {
                         })}
                     />
                 </Progress>
-                <h1>Hisórico</h1>
+                <h1 onClick={() => navigate('/historico')}>Hisórico</h1>
             </Bottom>
         </>
     )
@@ -42,10 +51,12 @@ display: ${props => props.footer};
 justify-content: space-around;
 align-items: center;
 background-color: #FFFFFF;
+z-index: 1;
 
 h1{
     font-size: 18px;
     color: #52B6FF;
+    cursor: pointer;
 }
 `
 
@@ -53,4 +64,5 @@ const Progress = styled.div`
 width: 100px;
 position:absolute;
 bottom:20px;
+cursor: pointer;
 `

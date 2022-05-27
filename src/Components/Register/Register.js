@@ -1,5 +1,5 @@
 // HOOKS
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import axios from 'axios'
 
@@ -16,6 +16,7 @@ function Register(props) {
     const [name, setName] = useState('')
     const [image, setImage] = useState('')
     const [password, setPassword] = useState('')
+    const [disableInput, setDisableInput] = useState(false)
 
     let navigate = useNavigate()
 
@@ -24,6 +25,8 @@ function Register(props) {
     }
 
     function RegisterData(event) {
+
+        setDisableInput(true)
 
         event.preventDefault();
 
@@ -41,7 +44,10 @@ function Register(props) {
         promise.then(res => {
             navigate('../')
         })
-        promise.catch(err => console.log(err))
+        promise.catch(err => {
+            setDisableInput(false)
+            alert('Preencha os campos corretamente!')
+        })
     }
 
     return (
@@ -51,11 +57,15 @@ function Register(props) {
                     <img src={logo} alt='logo' />
                 </Logo>
                 <Form>
-                    <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} />
-                    <input type="password" placeholder='senha' value={password} onChange={(event) => setPassword(event.target.value)} />
-                    <input type="text" placeholder='nome' value={name} onChange={(event) => setName(event.target.value)} />
-                    <input type="url" placeholder='foto' value={image} onChange={(event) => setImage(event.target.value)} />
-                    <button onClick={RegisterData}>Entrar</button>
+                    <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} disabled={disableInput} />
+
+                    <input type="password" placeholder='senha' value={password} onChange={(event) => setPassword(event.target.value)} disabled={disableInput} />
+
+                    <input type="text" placeholder='nome' value={name} onChange={(event) => setName(event.target.value)} disabled={disableInput} />
+
+                    <input type="url" placeholder='foto' value={image} onChange={(event) => setImage(event.target.value)} disabled={disableInput} />
+
+                    <button onClick={RegisterData} disabled={disableInput}>Entrar</button>
                 </Form>
                 <h1 onClick={GoToLogin}>Já tem uma conta? Faça login!</h1>
             </Container>

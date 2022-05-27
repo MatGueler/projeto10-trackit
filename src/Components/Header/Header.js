@@ -1,7 +1,11 @@
+import { useContext } from 'react'
 import styled from 'styled-components'
 import logoMenu from '../../Assets/Images/logoMenu.png'
+import TokenContext from '../../Contexts/TokenContext'
 
-function Header({ header, infos }) {
+function Header({ header }) {
+
+    const { setToken, infos, setInfos } = useContext(TokenContext)
 
     return (
         <>
