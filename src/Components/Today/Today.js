@@ -1,39 +1,103 @@
 import TokenContext from "../../Contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 
-function Trocar({ item, habitsToday, finished, setFinished }) {
 
-    const [color, setColor] = useState(false)
+function CheckHabit(id, check, token) {
+
+    if (check === 'mark') {
+
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post(URL, '', config);
+
+        promise.then((response) => {
+            console.log('marquei')
+        })
+
+        promise.catch((err) => { console.log(err) })
+
+    }
+    else {
+
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post(URL, '', config);
+
+        promise.then((response) => { console.log('desmarquei') })
+
+        promise.catch((err) => { console.log(err) })
+    }
+}
+
+function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, setHabitsDone, percentage, setPercentage }) {
+
+    const [color, setColor] = useState(item.done)
 
     if (color === false) {
+
+        let u = 0;
+
+        habitsToday.map((item) => {
+            if (item.done === true) {
+                u += 1
+            }
+        })
+
+        setPercentage(Math.ceil((u / habitsToday.length) * 100))
+
         return (
             <TodayHabit color="EBEBEB">
                 <Info>
-                    <h2>dd</h2>
-                    <h3>Sequencia atual: dias</h3>
-                    <h3>Seu recorde: dias</h3>
+                    <h2>{item.name}</h2>
+                    <h3>Sequencia atual: {item.currentSequence} dias</h3>
+                    <h3>Seu recorde: {item.highestSequence} dias</h3>
                 </Info>
                 <ion-icon name="checkbox" onClick={() => {
                     setColor(!color)
                     setFinished([...finished, (item.id)])
+                    CheckHabit(item.id, 'mark', token)
                 }}></ion-icon>
             </TodayHabit>
         )
     }
     else {
+
+        let u = 0;
+
+        habitsToday.map((item) => {
+            if (item.done === true) {
+                u += 1
+            }
+        })
+
+        setPercentage(Math.ceil((u / habitsToday.length) * 100))
         return (
             <TodayHabit color="8FC549">
                 <Info>
-                    <h2>igual</h2>
-                    <h3>Sequencia atual: dias</h3>
-                    <h3>Seu recorde: dias</h3>
+                    <h2>{item.name}</h2>
+                    <h3>Sequencia atual: {item.currentSequence} dias</h3>
+                    <h3>Seu recorde: {item.highestSequence} dias</h3>
                 </Info>
                 <ion-icon name="checkbox" onClick={() => {
                     setColor(!color)
                     setFinished([...finished, (item.id)])
+                    CheckHabit(item.id, 'off', token)
                 }}></ion-icon>
             </TodayHabit>
         )
@@ -48,7 +112,7 @@ function Today(props) {
 
     dayjs.extend(isoWeek)
 
-    const { token, infos } = useContext(TokenContext)
+    const { token, percentage, setPercentage } = useContext(TokenContext)
 
     const { setHeader, setFooter } = props;
 
@@ -80,15 +144,26 @@ function Today(props) {
 
     }, []);
 
+
+    let u = 0;
+
+    habitsToday.map((item) => {
+        if (item.done === true) {
+            u += 1
+        }
+    })
+
+    setPercentage((u / habitsToday.length) * 100)
+
     return (
         <>
             <Container>
                 <StatusHabits>
                     <h1>{daysOfWeek[dayjs().isoWeekday()]}, {dayjs().format('DD/MM')}</h1>
-                    <h2>67% dos hábitos concluídos</h2>
+                    <h2>{percentage} % dos hábitos concluídos</h2>
                 </StatusHabits>
 
-                {habitsToday.map((item) => <Trocar item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} />)}
+                {habitsToday.map((item, index) => <Trocar item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} token={token} key={index} percentage={percentage} setPercentage={setPercentage} />)}
 
             </Container>
         </>
