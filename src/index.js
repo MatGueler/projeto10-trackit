@@ -29,10 +29,11 @@ function App() {
     const [infos, setInfos] = useState([])
     const [token, setToken] = useState('')
     const [percentage, setPercentage] = useState(50)
+    const [habitsToday, setHabitsToday] = useState([])
 
     return (
         <>
-            <TokenContext.Provider value={{ token, setToken, infos, setInfos, percentage, setPercentage }}>
+            <TokenContext.Provider value={{ token, setToken, infos, setInfos, percentage, setPercentage, habitsToday, setHabitsToday }}>
                 <BrowserRouter>
                     <Header header={header} />
                     <Footer footer={footer} />

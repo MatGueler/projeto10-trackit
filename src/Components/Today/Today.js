@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 
-function CheckHabit(id, check, token) {
+function CheckHabit(id, check, token, update, setUpdate) {
 
     if (check === 'mark') {
 
@@ -20,9 +20,7 @@ function CheckHabit(id, check, token) {
 
         const promise = axios.post(URL, '', config);
 
-        promise.then((response) => {
-            console.log('marquei')
-        })
+        promise.then((response) => { 'OK!' })
 
         promise.catch((err) => { console.log(err) })
 
@@ -39,13 +37,15 @@ function CheckHabit(id, check, token) {
 
         const promise = axios.post(URL, '', config);
 
-        promise.then((response) => { console.log('desmarquei') })
+        promise.then((response) => { 'OK!' })
 
         promise.catch((err) => { console.log(err) })
     }
+
+    setUpdate(!update)
 }
 
-function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, setHabitsDone, percentage, setPercentage }) {
+function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, setHabitsDone, percentage, setPercentage, update, setUpdate }) {
 
     const [color, setColor] = useState(item.done)
 
@@ -62,7 +62,7 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
         setPercentage(Math.ceil((u / habitsToday.length) * 100))
 
         return (
-            <TodayHabit color="EBEBEB">
+            <TodayHabit color="EBEBEB" sequence='666666'>
                 <Info>
                     <h2>{item.name}</h2>
                     <h3>Sequencia atual: {item.currentSequence} dias</h3>
@@ -71,7 +71,7 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
                 <ion-icon name="checkbox" onClick={() => {
                     setColor(!color)
                     setFinished([...finished, (item.id)])
-                    CheckHabit(item.id, 'mark', token)
+                    CheckHabit(item.id, 'mark', token, update, setUpdate)
                 }}></ion-icon>
             </TodayHabit>
         )
@@ -88,16 +88,16 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
 
         setPercentage(Math.ceil((u / habitsToday.length) * 100))
         return (
-            <TodayHabit color="8FC549">
+            <TodayHabit color="8FC549" sequence='8FC549'>
                 <Info>
                     <h2>{item.name}</h2>
-                    <h3>Sequencia atual: {item.currentSequence} dias</h3>
+                    <h3>Sequencia atual: <span>{item.currentSequence} dias</span></h3>
                     <h3>Seu recorde: {item.highestSequence} dias</h3>
                 </Info>
                 <ion-icon name="checkbox" onClick={() => {
                     setColor(!color)
                     setFinished([...finished, (item.id)])
-                    CheckHabit(item.id, 'off', token)
+                    CheckHabit(item.id, 'off', token, update, setUpdate)
                 }}></ion-icon>
             </TodayHabit>
         )
@@ -112,13 +112,13 @@ function Today(props) {
 
     dayjs.extend(isoWeek)
 
-    const { token, percentage, setPercentage } = useContext(TokenContext)
+    const { token, percentage, setPercentage, habitsToday, setHabitsToday } = useContext(TokenContext)
 
     const { setHeader, setFooter } = props;
 
     const [finished, setFinished] = useState([])
 
-    const [habitsToday, setHabitsToday] = useState([])
+    const [update, setUpdate] = useState(true)
 
     const daysOfWeek = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
 
@@ -142,7 +142,7 @@ function Today(props) {
         });
         promise.catch((err) => console.log(err))
 
-    }, []);
+    }, [update]);
 
 
     let u = 0;
@@ -163,7 +163,7 @@ function Today(props) {
                     <h2>{percentage} % dos hábitos concluídos</h2>
                 </StatusHabits>
 
-                {habitsToday.map((item, index) => <Trocar item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} token={token} key={index} percentage={percentage} setPercentage={setPercentage} />)}
+                {habitsToday.map((item, index) => <Trocar item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} token={token} key={index} percentage={percentage} setPercentage={setPercentage} update={update} setUpdate={setUpdate} />)}
 
             </Container>
         </>
@@ -173,7 +173,7 @@ function Today(props) {
 export default Today;
 
 const Container = styled.div`
-margin: 0 20px;
+margin: 0 20px 150px 20px;
 `
 
 const StatusHabits = styled.div`
@@ -214,6 +214,10 @@ h2{
 h3{
     color: #666666;
     font-size: 13px;
+}
+
+span{
+    color: #${(props) => props.sequence};
 }
 
 ion-icon{

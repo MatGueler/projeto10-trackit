@@ -7,9 +7,13 @@ import axios from 'axios';
 // Componentes
 import TokenContext from '../../Contexts/TokenContext';
 
+function Atualizar(update, setUpdate) {
+    setUpdate(!update)
+}
+
 function Habits(props) {
 
-    const { token } = useContext(TokenContext)
+    const { token, habitsToday, setHabitsToday } = useContext(TokenContext)
 
     let DaysValue = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -17,7 +21,7 @@ function Habits(props) {
 
     const [myHabits, setMyHabits] = useState([]);
 
-    let navigate = useNavigate()
+    const [update, setUpdate] = useState(true)
 
     useEffect(() => {
 
@@ -32,7 +36,7 @@ function Habits(props) {
         promise.then((response) => {
             setMyHabits(response.data)
         });
-    }, []);
+    }, [update]);
 
     function RemoveHabit(id) {
 
@@ -116,7 +120,7 @@ function Habits(props) {
 
         const [disableInput, setDisableInput] = useState(false)
 
-        function PostHabit() {
+        function PostHabit(update, setUpdate) {
 
             setDisableInput(true)
 
@@ -134,6 +138,7 @@ function Habits(props) {
                 setName('')
                 setSelectedDays([])
                 setCriated(false)
+                Atualizar(update, setUpdate)
             })
 
             promise.catch((err) => {
@@ -196,7 +201,7 @@ function Habits(props) {
                 </Days>
                 <SaveButtons>
                     <h3 onClick={() => setCriated(!criated)}>Cancelar</h3>
-                    <button onClick={PostHabit} disabled={disableInput}>Salvar</button>
+                    <button onClick={() => PostHabit(update, setUpdate)} disabled={disableInput}>Salvar</button>
                 </SaveButtons>
 
             </AddHabit>
@@ -213,7 +218,7 @@ function Habits(props) {
                     </ButtonAdd>
                 </MyHabits>
 
-                {(criated === false) ? '' : <AddHabits setCriated={setCriated} />}
+                {(criated === false) ? '' : <AddHabits setCriated={setCriated} update={update} setUpdate={setUpdate} />}
 
                 {myHabits.map((element) => <Habit name={element.name} id={element.id} days={element.days} />)}
 
