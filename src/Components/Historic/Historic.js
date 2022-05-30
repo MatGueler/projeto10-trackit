@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Calendar from 'react-calendar';
 import '../Historic/calendario.css'
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 function Historic() {
@@ -12,7 +13,11 @@ function Historic() {
                     <h1>Histórico</h1>
                 </HistoryStatus>
                 <Calendario>
-                    <Calendar onChange={onChange} value={value} />
+                    <Calendar
+                        onChange={onChange}
+                        value={value}
+                        formatDay={(locale, date) => dayjs(date).format('DD')}
+                    />
                 </Calendario>
                 <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
             </Container>

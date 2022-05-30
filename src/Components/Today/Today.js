@@ -1,8 +1,6 @@
 import TokenContext from "../../Contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 
@@ -56,6 +54,7 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
         habitsToday.map((item) => {
             if (item.done === true) {
                 u += 1
+                return u;
             }
         })
         setPercentage(Math.ceil((u / habitsToday.length) * 100))
@@ -83,6 +82,7 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
         habitsToday.map((item) => {
             if (item.done === true) {
                 u += 1
+                return u;
             }
         })
 
@@ -145,9 +145,10 @@ function Today(props) {
 
         let u = 0;
 
-        habitsToday.map((item) => {
+        habitsToday.map((item, index) => {
             if (item.done === true) {
                 u += 1
+                return u;
             }
         })
 
@@ -176,6 +177,7 @@ function Today(props) {
             habitsToday.map((item) => {
                 if (item.done === true) {
                     u += 1
+                    return u;
                 }
             })
         });
@@ -192,7 +194,7 @@ function Today(props) {
                     <h2>{percentage} % dos hábitos concluídos</h2>
                 </StatusHabits>
 
-                {habitsToday.map((item, index) => <Trocar item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} token={token} key={index} percentage={percentage} setPercentage={setPercentage} update={update} setUpdate={setUpdate} />)}
+                {habitsToday.map((item, index) => <Trocar key={index} item={item} habitsToday={habitsToday} finished={finished} setFinished={setFinished} token={token} percentage={percentage} setPercentage={setPercentage} update={update} setUpdate={setUpdate} />)}
 
             </Container>
         </>

@@ -12,7 +12,7 @@ function Login() {
     const [password, setPassword] = useState('')
     const [disableInput, setDisableInput] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { setToken, infos, setInfos } = useContext(TokenContext)
+    const { setToken, setInfos } = useContext(TokenContext)
 
     let navigate = useNavigate()
 

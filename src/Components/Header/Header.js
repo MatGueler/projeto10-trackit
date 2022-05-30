@@ -5,7 +5,7 @@ import TokenContext from '../../Contexts/TokenContext'
 
 function Header({ header }) {
 
-    const { setToken, infos, setInfos } = useContext(TokenContext)
+    const { infos } = useContext(TokenContext)
 
     return (
         <>

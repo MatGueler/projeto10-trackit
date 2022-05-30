@@ -1,6 +1,5 @@
 
 import styled from 'styled-components'
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { ThreeDots } from 'react-loader-spinner'
@@ -14,7 +13,7 @@ function Atualizar(update, setUpdate) {
 
 function Habits(props) {
 
-    const { token, habitsToday, setHabitsToday, percentage, myHabits, setMyHabits } = useContext(TokenContext)
+    const { token, habitsToday, myHabits, setMyHabits } = useContext(TokenContext)
 
     let DaysValue = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -41,6 +40,7 @@ function Habits(props) {
             habitsToday.map((item) => {
                 if (item.done === true) {
                     u += 1
+                    return u;
                 }
             })
         });
@@ -109,7 +109,7 @@ function Habits(props) {
                 <ion-icon name="trash-outline" onClick={() => RemoveHabit(id)}></ion-icon>
                 <h3>{name}</h3>
                 <Days>
-                    {DaysValue.map((day, numero) => <ShowDays numero={numero} day={day} days={days} />)}
+                    {DaysValue.map((day, numero) => <ShowDays key={numero} numero={numero} day={day} days={days} />)}
                 </Days>
             </MyHabit>
         )
@@ -168,13 +168,14 @@ function Habits(props) {
             { (varification === 0) ? setSelectedDays([...selectedDays, indexSelected]) : setSelectedDays(ActualDays) }
         }
 
-        function AddDays({ numero, day, test, setTest }) {
+        function AddDays({ numero, day }) {
 
             let verification = 0;
 
             selectedDays.map(item => {
                 if (numero === item) {
                     verification = 1
+                    return verification;
                 }
             })
 
@@ -198,24 +199,20 @@ function Habits(props) {
             }
         }
 
-        const [test, setTest] = useState(true)
-
         return (
             <AddHabit>
                 <form>
                     <input type="text" placeholder='nome do hábito' value={name} onChange={(event) => setName(event.target.value)} disabled={disableInput} />
                 </form>
                 <Days>
-                    {test ?
-                        DaysValue.map((day, index) => <AddDays numero={index} day={day} test={test} setTest={setTest} />) :
-                        ''}
+                    {DaysValue.map((day, index) => <AddDays key={index} numero={index} day={day} />)}
                 </Days>
                 <SaveButtons>
                     <h3 onClick={() => setCriated(!criated)}>Cancelar</h3>
                     <button onClick={() => {
                         if (name.length > 0 && selectedDays.length > 0) {
                             PostHabit(update, setUpdate, setLoading)
-                        }else{
+                        } else {
                             alert('Preencha os campos corretamente!')
                         }
 
@@ -238,7 +235,7 @@ function Habits(props) {
 
                 {(criated === false) ? '' : <AddHabits setCriated={setCriated} update={update} setUpdate={setUpdate} />}
 
-                {myHabits.map((element) => <Habit name={element.name} id={element.id} days={element.days} />)}
+                {myHabits.map((element, index) => <Habit key={index} name={element.name} id={element.id} days={element.days} />)}
 
                 {(myHabits.length === 0) ? (<h2>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h2>) : ''}
             </Container>

@@ -1,11 +1,8 @@
 import ReactDOM from "react-dom";
 
-
-
-
 // Hooks
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, createContext, useContext } from "react";
+import { useState } from "react";
 
 
 // Components
