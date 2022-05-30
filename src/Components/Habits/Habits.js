@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { ThreeDots } from 'react-loader-spinner'
 
 // Componentes
 import TokenContext from '../../Contexts/TokenContext';
@@ -13,15 +14,16 @@ function Atualizar(update, setUpdate) {
 
 function Habits(props) {
 
-    const { token, habitsToday, setHabitsToday } = useContext(TokenContext)
+    const { token, habitsToday, setHabitsToday, percentage, myHabits, setMyHabits } = useContext(TokenContext)
 
     let DaysValue = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
     const [criated, setCriated] = useState(false);
 
-    const [myHabits, setMyHabits] = useState([]);
-
     const [update, setUpdate] = useState(true)
+
+    const [loading, setLoading] = useState(false)
+
 
     useEffect(() => {
 
@@ -35,7 +37,14 @@ function Habits(props) {
 
         promise.then((response) => {
             setMyHabits(response.data)
+            let u = 0;
+            habitsToday.map((item) => {
+                if (item.done === true) {
+                    u += 1
+                }
+            })
         });
+
     }, [update]);
 
     function RemoveHabit(id) {
@@ -120,9 +129,10 @@ function Habits(props) {
 
         const [disableInput, setDisableInput] = useState(false)
 
-        function PostHabit(update, setUpdate) {
+        function PostHabit(update, setUpdate, setLoading) {
 
             setDisableInput(true)
+            setLoading(true)
 
             const config = {
                 headers: {
@@ -143,6 +153,7 @@ function Habits(props) {
 
             promise.catch((err) => {
                 setDisableInput(false)
+                setLoading(false)
                 console.log(err)
             })
         }
@@ -201,7 +212,14 @@ function Habits(props) {
                 </Days>
                 <SaveButtons>
                     <h3 onClick={() => setCriated(!criated)}>Cancelar</h3>
-                    <button onClick={() => PostHabit(update, setUpdate)} disabled={disableInput}>Salvar</button>
+                    <button onClick={() => {
+                        if (name.length > 0 && selectedDays.length > 0) {
+                            PostHabit(update, setUpdate, setLoading)
+                        }else{
+                            alert('Preencha os campos corretamente!')
+                        }
+
+                    }} disabled={disableInput}>{loading ? <ThreeDots color="#FFFFFF" height={20} width={80} /> : 'Salvar'}</button>
                 </SaveButtons>
 
             </AddHabit>

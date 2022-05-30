@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import axios from 'axios'
+import { ThreeDots } from 'react-loader-spinner'
 
 // STYLED
 import styled from 'styled-components';
@@ -17,6 +18,7 @@ function Register(props) {
     const [image, setImage] = useState('')
     const [password, setPassword] = useState('')
     const [disableInput, setDisableInput] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     let navigate = useNavigate()
 
@@ -27,6 +29,7 @@ function Register(props) {
     function RegisterData(event) {
 
         setDisableInput(true)
+        setLoading(true)
 
         event.preventDefault();
 
@@ -46,6 +49,7 @@ function Register(props) {
         })
         promise.catch(err => {
             setDisableInput(false)
+            setLoading(false)
             alert('Preencha os campos corretamente!')
         })
     }
@@ -65,7 +69,7 @@ function Register(props) {
 
                     <input type="url" placeholder='foto' value={image} onChange={(event) => setImage(event.target.value)} disabled={disableInput} />
 
-                    <button onClick={RegisterData} disabled={disableInput}>Entrar</button>
+                    <button onClick={RegisterData} disabled={disableInput}>{loading ? <ThreeDots color="#FFFFFF" height={20} width={80} /> : 'Cadastrar'}</button>
                 </Form>
                 <h1 onClick={GoToLogin}>Já tem uma conta? Faça login!</h1>
             </Container>
@@ -110,6 +114,9 @@ input::placeholder{
 
 button{
     height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #52B6FF;
     color: #FFFFFF;
     border: 0;

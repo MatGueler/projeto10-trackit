@@ -20,7 +20,7 @@ function CheckHabit(id, check, token, update, setUpdate) {
 
         const promise = axios.post(URL, '', config);
 
-        promise.then((response) => { 'OK!' })
+        promise.then((response) => { setUpdate(!update) })
 
         promise.catch((err) => { console.log(err) })
 
@@ -37,12 +37,12 @@ function CheckHabit(id, check, token, update, setUpdate) {
 
         const promise = axios.post(URL, '', config);
 
-        promise.then((response) => { 'OK!' })
+        promise.then((response) => setUpdate(!update))
 
         promise.catch((err) => { console.log(err) })
     }
 
-    setUpdate(!update)
+
 }
 
 function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, setHabitsDone, percentage, setPercentage, update, setUpdate }) {
@@ -58,8 +58,8 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
                 u += 1
             }
         })
-
         setPercentage(Math.ceil((u / habitsToday.length) * 100))
+
 
         return (
             <TodayHabit color="EBEBEB" sequence='666666'>
@@ -87,12 +87,13 @@ function Trocar({ item, habitsToday, finished, setFinished, token, habitsDone, s
         })
 
         setPercentage(Math.ceil((u / habitsToday.length) * 100))
+
         return (
             <TodayHabit color="8FC549" sequence='8FC549'>
                 <Info>
                     <h2>{item.name}</h2>
                     <h3>Sequencia atual: <span>{item.currentSequence} dias</span></h3>
-                    <h3>Seu recorde: {item.highestSequence} dias</h3>
+                    <h3>Seu recorde: <span>{item.highestSequence} dias</span></h3>
                 </Info>
                 <ion-icon name="checkbox" onClick={() => {
                     setColor(!color)
@@ -112,7 +113,7 @@ function Today(props) {
 
     dayjs.extend(isoWeek)
 
-    const { token, percentage, setPercentage, habitsToday, setHabitsToday } = useContext(TokenContext)
+    const { token, percentage, setPercentage, habitsToday, setHabitsToday, setMyHabits } = useContext(TokenContext)
 
     const { setHeader, setFooter } = props;
 
@@ -142,18 +143,46 @@ function Today(props) {
         });
         promise.catch((err) => console.log(err))
 
+        let u = 0;
+
+        habitsToday.map((item) => {
+            if (item.done === true) {
+                u += 1
+            }
+        })
+
+        if (!isNaN(Math.ceil((u / habitsToday.length) * 100))) {
+            setPercentage(Math.ceil((u / habitsToday.length) * 100))
+        }
+
     }, [update]);
 
 
-    let u = 0;
 
-    habitsToday.map((item) => {
-        if (item.done === true) {
-            u += 1
+
+    useEffect(() => {
+
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         }
-    })
 
-    setPercentage((u / habitsToday.length) * 100)
+        const promise = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, config);
+
+        promise.then((response) => {
+            setMyHabits(response.data)
+            let u = 0;
+            habitsToday.map((item) => {
+                if (item.done === true) {
+                    u += 1
+                }
+            })
+        });
+
+    }, [update]);
+
+
 
     return (
         <>
@@ -216,8 +245,12 @@ h3{
     font-size: 13px;
 }
 
-span{
+span:first-child{
     color: #${(props) => props.sequence};
+}
+
+span:nth-child(2){
+    color: #${(props) => props.record};
 }
 
 ion-icon{
