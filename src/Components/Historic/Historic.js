@@ -1,12 +1,19 @@
 import styled from 'styled-components'
+import Calendar from 'react-calendar';
+import '../Historic/calendario.css'
+import { useState } from 'react';
 
 function Historic() {
+    const [value, onChange] = useState(new Date());
     return (
         <>
             <Container>
                 <HistoryStatus>
                     <h1>Histórico</h1>
                 </HistoryStatus>
+                <Calendario>
+                    <Calendar onChange={onChange} value={value} />
+                </Calendario>
                 <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
             </Container>
         </>
@@ -36,4 +43,9 @@ h1{
     font-size: 23px;
     color: #126BA5;
 }
+`
+
+const Calendario = styled.div`
+display: flex;
+justify-content: center;
 `
