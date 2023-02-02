@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# <p align = "center"> Track it </p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align = "center">
+   <img src="https://img.shields.io/badge/author-Mateus Gueler-4dae71?style=flat-square" />
+   <img src="https://img.shields.io/github/languages/count/MatGueler/projeto10-trackit?color=4dae71&style=flat-square" />
+</p>
 
-## Available Scripts
+## :clipboard: Descrição
 
-In the project directory, you can run:
+O **TrackIt** é um projeto para o usuário controlar os seus hpabitos diários. O usuário pode criar ou apagar um hábito, informando os dias específicos para realiza-lo, além disso consegue marcar os hábitos já realizados e hábitos que ainda faltam.
 
-### `npm start`
+## :computer: Tecnologias e Conceitos
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- REST APIs
+- Node.js (v16.17.0)
+- JavaScript
+- React
+- Vercel
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## :rocket: Rotas
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```yml
+Endpoint: '/'
+    - Rota para o usuário fazer login com sua conta
+```
 
-### `npm run build`
+```yml
+Endpoint: '/cadastro'
+    - Rota para o usuário criar sua conta
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```yml
+Endpoint: '/hoje (autenticada)'
+    - Rota onde o usuário pode controlar todos os seus hábitos do dia
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```yml
+Endpoint: '/habitos (autenticada)'
+    - Rota para criar e apagar hábitos do usuário
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```yml
+Endpoint: '/historico (autenticada)'
+    - Rota para observar o histórico de hábitos do usuário
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🏁 Rodando a aplicação
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-Deploy
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+A aplicação front-end está disponível em deploy na plataforma [VERCEL](https://vercel.com), basta acessar o link abaixo:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+[Track it](https://projeto10-trackit-puce.vercel.app/)
 
-## Learn More
+- Local
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Este projeto foi inicializado com [Create React App](https://github.com/facebook/create-react-app), portanto, certifique-se de ter a última versão estável do [Node.js](https://nodejs.org/en/download/) e [npm](https://www.npmjs.com/) rodando localmente.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Primeiro, clone este repositório em sua máquina:
 
-### Code Splitting
+```
+git clone git@github.com:MatGueler/projeto10-trackit.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Em seguida, dentro da pasta, execute o seguinte comando para instalar as dependências.
 
-### Analyzing the Bundle Size
+```
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Terminado o processo, basta iniciar a aplicação:
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+npm run start
+```
